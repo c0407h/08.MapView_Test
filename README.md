@@ -86,7 +86,7 @@
    
    
    항공사 코드가 존재하는지 확인하려면 if문과 nil을 활용해서 코드를 작성할 수 있다.
-   결과는 "없는 항공사 코드입니다"를 출렵한다.
+   결과는 "없는 항공사 코드입니다"를 출력한다.
    
    if flightCode[flightNumber] != nil {
        print("항공사 코드\(flightNumber)는 \(flightCode[flightNumber]!)입니다.")
@@ -108,19 +108,235 @@
 ~~~ swift
   func 함수명(파라미터명1: 자료형, 파라미터명2: 자료형) -> 반환값의 자료형 { 실행 코드 }
 ~~~  
+       
+   - 실제 예를 들어 살펴보면, 문자열 두개의 파라미터를 입력받아 문자열을 출력하는 삼수인 today함수를 정의한다.  
+   - today 함수는 문자열로 month와 day 파라미터를 전달받아 오늘 날짜를 알려 주는 문자열을 만들어서 이 문자열을 리턴하는 함수이다.  
 
-    - 실제 예를 들어 살펴보면, 문자열 두개의 파라미터를 입력받아 문자열을 출력하는 삼수인 today함수를 정의한다.
-    - today 함수는 문자열로 month와 day 파라미터를 전달받아 오늘 날짜를 알려 주는 문자열을 만들어서 이 문자열을 리턴하는 함수이다.  
-    
 ~~~ swift
   func today(month: String, day: String) -> String {
      return "오늘은 \(month)월 \(day)일입니다."
   }
 ~~~  
-    - 그래서 today(month: "1", day: "23" )는 today 함수를 호출하고 month에는 "1"이 전달되고 day에는 "23"이 전달되어
-    - 그 결과 "오늘은 1월 23일입니다."의 문자열이 출력된다.
-    - 오늘 날자를 출력하고 싶을 때 today 함수를 호출하여 사용하면 된다.
+   
+   - 그래서 today(month: "1", day: "23" )는 today 함수를 호출하고 month에는 "1"이 전달되고 day에는 "23"이 전달되어  
+   - 그 결과 "오늘은 1월 23일입니다."의 문자열이 출력된다.  
+   - 오늘 날자를 출력하고 싶을 때 today 함수를 호출하여 사용하면 된다.  
     
+~~~swift
+  func today(month: String, day: String) -> String {
+    return "오늘은 \(month)월 \(day)일입니다."
+  }
+  
+  today(month: "1", day:"23")
+  print(today(month: "1", day: "23")
+~~~
+~~~
+결과
+
+오늘은 1월 23일 입니다.
+~~~
+  - 함수를 만들 때 자주하는 실수
+  1) 첫 번째 파라미터 명을 생략하면 안된다!
+     - 함수를 호출하여 사용할 때 첫 번째 파라미터명을 생략하면 에러가 발생한다.
+     - 예를 들어 앞의 소스처럼 사용하면 에러가 발생한다.
+     - 아래처럼 첫 번째 파라미터명도 함께 사용해야 에러가 발생하지 않는다
+     
+~~~swift
+  today("1", day:"23")              -  1
+  
+  today(month: "1", day: "23")      -  2
+~~~
+
+
+  2) 인자라벨을 쓰면 안된다.
+     - func 함수명(인자라벨 파라미터명1: 자료형, 인자라벨 파라미터형2: 자료형) -> 반환값의 자료형 {실행 코드} 형태로 구현하면 경고 메세지가 나온다
+~~~swift
+   ex)
+   func today(month month: String, day day: String) -> String {            ----->> 에러발생
+       return "오늘은 \(month)월 \(day)일입니다."
+  }
+  
+  today(month: "1", day:"23")
+  print(today(month: "1", day: "23")
+~~~
+  2. 익명함수란 무엇인가?
+     -  일반적인 함수의 경우 func 키워드와 함수명을 선언하고 사용하지만 효율적인 코드를 작성하기위해
+        함수명을 선언하지 않고 바로 함수 몸체만 만들어 사용하는 일회용 함수를 익명함수(Anonymous Functions) 
+        혹은 클로저(Closure)라고 한다.
+     - 함수의 파라미터로 값이나 변수가 아닌 함수를 사용하고 싶을 때, 함수명을 사용하지 않고 함수의 몸체만 이용할 때 사용한다
+~~~swift
+  // 보통함수
+  func 함수명(파라미터명: 자료형) -> (자료반환형) {
+       실행구문
+  }
+  
+  // 익명함수
+  
+  // func 함수명을 생략한 형태로 바꿀 수 있다. 
+  // 또한 익명 함수의 경우 실행 구문이 길지 않아 함수를 한 줄로 구현하는 경우도 있다.
+  { (파라미터명: 자료형) -> (반환 타입) in 실행 구문 }
+  
+  // 반환 자료형을 생략할 수 있다
+  { (파라미터명: 자료형) in 실행 구문 }
+  
+  // 파라미터 자료형을 생략할 수 있다
+  { (파라미터명) in 실행 구문 }
+  
+  // 파라미터 자료형이 생략된 경우 매개변수의 소괄호(,)를 생략할 수 있다
+  { 파라미터명 in 실행구문 }
+~~~
+
+  - 예를 들어 직접 적용해 보자
+  - completeWork  함수는 Bool 타입의 finished 매개변수를 받아 출력하는 함수이며 리턴 타입은 없다.
+~~~swift
+  // 보통함수
+  func completeWork(finished: Bool) -> () {
+    print("complete : \(finished)")
+  }
+  
+  // 익명함수
+  
+  // 익명함수 형태로 바꾸면 이렇게 된다.
+  { (finished: Bool) -> () in print("complete : \(finished)") }
+  
+  // 컴파일러가 반환 타입을 미리 알고 있다면 반환 타입을 생략할 수 있다
+  { (finished: Bool) in print("complete : \(finished)") }
+  
+  // 매개 변수의 파라미터 타입도 생략할 수 있다.
+  { (finished) in print("complete : \(finished)")}
+  
+  // 파라미터 타입이 생략된 경우 매개변수의 소괄호(,)를 생략할 수 있다.
+  { finished in print("complete : \(finished)") }
+~~~
+
+  3. nil이란 무엇인가?
+     - nil은 값이 존재하지 않음을 의미
+     - 예를 들어 나열한 flightCode 중 flightNumber "aa"는 존재하지 않으므로 결과를 보면 nil이 발견되었다는 에러메세지를 나타낸다
+     - 즉 변수, flightNumber가 존재하지 않기 때문에 에러 메세지가 나타난다.
+~~~swift
+   var flightCode = [
+       "oz":"아시아나항공",
+       "ke":"대한항공",
+       "ze":"이스타항공",
+       "lj":"진에어",
+       "7c":":제주항공"
+   ]
+   
+   flightNumber = "aa"
+   print("항공사 코드 \(flightNumber)는 \(flightCode[flightNumber])입니다.")
+~~~
+~~~swift
+  결과
+  fatal error: unexpectedly found nil while unwrapping an Optional value
+~~~
     
-    
- 
+   - 그렇다면 이렇게 값이 존재하지 않음을 뜻하는 nil 은 어떤 경우에 사용할까?
+   - 위와 같은 경우에는 해당하는 값이 없을 때 '없는 항공사 코드입니다'와 같은 문구를 나타낼 때 사용한다.
+   - 아래처럼 if문으로 항공사 코드가 존재하는지를 nil을 이용해 확인한 후 그 결과에 따라 다르게 출력할 수 있다.
+~~~swift
+  if flightCode[flightNumber] != nil {
+       print("항공사 코드\(flightNumber)는 \(flightCode[flightNumber]!)입니다.")
+   } else {
+       print("없는 항공사 코드입니다.")
+   }
+~~~
+~~~swift
+  결과
+  없는 항공사 코드입니다.
+~~~
+  - 추가적으로 flightCode[flightNumber] 값을 flightCodeName 상수에 대입하는 방식으로 옵셔널 바인딩을 활용해서 작성할 수 있다
+~~~swift
+  if let flightCodeName = flightCode[flightNumber] {
+    print("항공사 코드 \(flightNumber)는 \(flightCodeName)입니다.")
+  }else{
+    print("없는 항공사 코드입니다.")
+  }
+~~~
+~~~swift
+  결과
+  없는 항공사 코드입니다.
+~~~
+
+  4. 옵셔널(Optionals) 변수란 무엇인가?
+     - 이러한 nil 값을 변수에 할당하면 어떻게 될까?
+     - 앞의 예제에서 위의 코드처럼 수정했을 때 아래와 같은 에러 메세지가 나온다
+~~~swift
+  var flightNumber = "oz"
+  var flightCompany: String = flightCode[flightNumber]
+~~~
+~~~swift
+  결과
+  error: value of optional type 'String?' not unwrapped; did you mean to use '!' or '?'?
+~~~
+   - 스위프트에서는 변수에 값을 대입할 때 반드시 nil이 아닌 값을 대입해야 하지만 위의 예제에서는 이전 예제와 같이
+     flightCompany에 nil 값이 할당될 수 있기 때문에 에러가 발생한다
+   - 이럴땐 옵셔널 변수를 사용해야한다.
+   - 옵셔널 타입으로 선언한 변수는 nil값을 가질 수 있다.
+   - 즉, 옵셔널 변수는 nil 값을 대입할 수 있거나 초깃값을 주지 않아 어떤 값이 들어갈지 모를 때 사용한다.
+   - 위의 예제를 해결하려면?
+     - 만일 어떤 변수에 nil 값을 대입할 수 있다면 옵셔널 변수로 선언해야한다.
+     - 즉, 변수의 자료형(위에서는 String) 다음에 '?'를 추가하여 옵셔널 변수라는 것을 선언함으로써 해결할 수 있다.
+~~~swift
+  var flightCompany: String? = flightCode[flightNumber]
+~~~
+   - 그러면 이렇게 옵셔널로 선언된 변수는 어떻게 사용할까?
+   - 위의 소스처럼 사용하면 경고 메세지가 나온다.
+   - 옵셔널로 선언된 변수에 값이 할당되면 그 값은 '옵셔널에 래핑(wrapped)되었다'고 하며,
+     이 값은 그냥 사용할 수 없고 아래 소스처럼 '!'를 사용해 강제 언래핑(force unwrapping)하여 값에 접근해야 한다.
+~~~swift
+  print(flightCompany)      ->   1
+  
+  
+  print(flightCompany!)     ->   2
+~~~
+   - 반면 옵셔널 변수는 암묵적인 언래핑(implicity unwrapping)이 되도록 선언할 수 있는데,
+     이 때는 강제 언래핑을 사용하지 않아도 값에 접근할 수 있다.
+   - 즉, 변수를 선언할 때 '?' 대신 '!'를 사용하여 암묵적인 언래핑된 옵셔널 변수로 선언할 수 있다.
+   - 이렇게되면 변수의 값에 접근할 때 '!'를 사용하지 않아도 된다.
+~~~swift
+  var flightNumber = "oz"
+  var flightCompany: String! = flightCode[flightNumber]
+  
+  print(flightCompany)
+~~~
+ 5. if문에서 !의 역할은 무엇인가?
+   - if문에서 조건에  '!'가 들어가있는 경우를 종종 볼 수 있다.
+   - 여기서 '!'는 논리 연산자의 하나로, 논리 NOT 연산자이다.
+   - NOT 연산자의 경우 변수 앞에 '!'가 붙는다.
+   - 앞에서 설명한 강제 언래핑 기호로 사용된 '!'나 강제 언래핑 기호를 생략하기 위한 변수 선언에 사용한 '!'는
+     변수 뒤에 붙으면 연산자가 아닌 키워드인 데 반해, NOT 연산자는 '!'는 +,-,*,/  등과 같은 연산자이다.
+   - 다만 논리 연산자이기 때문에 일반 값이 아닌 논리값(참,거짓)을 연산한다.
+   - '!'연산자 뒤에는 논리값(true 또는 false)을 가지는 Bool형의 변수나 상수가 와야한다.
+~~~swift
+  var on : Bool
+  
+  on=true
+  print(on)
+  print(!on)
+~~~
+   - on에 true값을 대입한 후 on을 출력하면 true가 출력되고, !on을 출력하면 false가 출력되는 것을 확인할 수 있다.
+  
+  6. self의 의미는 무엇인가?
+     - self란 보통 클래스나 구조체 자신을 가리킬 때 사용한다.
+     - 예를 들어 Point 클래스 내부에 x라는 변수가 있다고 한다면, 그런데 setX 함수는 입력 파라미터로 x를 가지고 있다.
+     - setX함수 안에서 파라미터의 x와 클랫그 내부의 x를 구분하기 위해 클래스 내부를 가르키는 self 키워드를 사용한다.
+     - self.x는 Point 클래스 내부의 변수를 나타내고, self를 붙히지 않은 x는 setX 함수의 파라미터 x를 나타낸다.
+     - 이와 같은 방법은 메서드(함수)에서 동일하게 사용할 수 있다.
+     - 또한 self. 함수는 자기 자신의 클래스 함수를 나타낸다
+~~~swift
+ class Point {
+        var x = 0
+        func setX(x:Int) ->> () {
+           self.x = x
+        }
+   }
+   
+   var p=Point();
+   print(p.x)
+   
+   p.setX(x:10)
+   print(p.x)
+~~~
+   - var p=Point()를 실행한 후 p.x의 값을 보면 x의 초깃값인 0을 확인할 수 있고
+   - p.setX(x:10)를 실행한 후 p.x의 값을 보면 10을 확인할 수 있다.
+   - 즉, 10인 x가 self.x에 대입되어 p.x가 10이 된 것이다.
